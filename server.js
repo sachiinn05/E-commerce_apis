@@ -14,11 +14,21 @@ import { ApplicationError } from './src/error-handler/applicationError.js';
 const server = express();
 
 // CORS policy configuration
-
-var corsOptions = {
-  origin: "http://localhost:5500"
-}
-server.use(cors(corsOptions));
+const allowedOrigins = [
+  "http://localhost:5500",
+  "https://e-commerce-apis-fx3w.onrender.com"
+];
+server.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed from this origin"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // server.use((req, res, next)=>{
 //   res.header('Access-Control-Allow-Origin','http://localhost:5500');
@@ -47,7 +57,8 @@ server.use(
   jwtAuth,
   productRouter
 );
-server.use("/api/cartItems", jwtAuth, cartRouter);
+server.use('/api/products', jwtAuth, productRouter);
+server.use('/api/cartItems', jwtAuth, cartRouter);
 server.use('/api/users', userRouter);
 
 // 3. Default request handler
@@ -85,6 +96,20 @@ server.get('/', (req, res) => {
         p {
           color: #34495e;
           font-size: 1.2rem;
+          margin-bottom: 20px;
+        }
+        a {
+          display: inline-block;
+          text-decoration: none;
+          background: #2980b9;
+          color: white;
+          padding: 10px 20px;
+          border-radius: 8px;
+          font-size: 1rem;
+          transition: 0.3s;
+        }
+        a:hover {
+          background: #1f6391;
         }
       </style>
     </head>
@@ -92,11 +117,15 @@ server.get('/', (req, res) => {
       <div class="container">
         <h1>Welcome to Ecommerce Website</h1>
         <p>Developed by <strong>Sachin Singh</strong></p>
+        <a href="https://e-commerce-apis-fx3w.onrender.com/api-docs/" target="_blank">
+          Click here to see the API List
+        </a>
       </div>
     </body>
     </html>
   `);
 });
+
 
 
 // Error handler middleware
