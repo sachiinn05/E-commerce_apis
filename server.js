@@ -52,8 +52,52 @@ server.use('/api/users', userRouter);
 
 // 3. Default request handler
 server.get('/', (req, res) => {
-  res.send('Welcome to Ecommerce APIs');
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Ecommerce Website</title>
+      <style>
+        body {
+          margin: 0;
+          padding: 0;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: linear-gradient(135deg, #6dd5fa, #2980b9);
+          font-family: Arial, sans-serif;
+        }
+        .container {
+          text-align: center;
+          background: rgba(255, 255, 255, 0.9);
+          padding: 40px;
+          border-radius: 15px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+          color: #2c3e50;
+          font-size: 2rem;
+          margin-bottom: 10px;
+        }
+        p {
+          color: #34495e;
+          font-size: 1.2rem;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>Welcome to Ecommerce Website</h1>
+        <p>Developed by <strong>Sachin Singh</strong></p>
+      </div>
+    </body>
+    </html>
+  `);
 });
+
 
 // Error handler middleware
 server.use((err, req, res, next)=>{
